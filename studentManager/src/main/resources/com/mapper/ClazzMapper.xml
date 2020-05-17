@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student.dao.ClazzMapper" >
+   <!-- int addClazz(Clazz clazz);
+    public  int updateClazz(Clazz clazz);
+    public int deleteClazz(String ids);
+    public List<Clazz> getClazzList(Map<String, Object> map);
+    public int getCount(Map<String, Object> map);
+    public List<Clazz> findAll();-->
+    <select id="getClazzList" parameterType="java.util.Map" resultType="com.student.bean.Clazz">
+        select * from clazz where 1=1
+        <if test="name !=null">
+           and name like #{name}
+        </if>
+        <if test="gradeId !=null">
+            and gradeId = #{gradeId}
+        </if>
+        limit #{offset},#{pageSize}
+    </select>
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from clazz where 1=1
+        <if test="name !=null">
+           and name like #{name}
+        </if>
+        <if test="gradeId !=null">
+           and gradeId = #{gradeId}
+        </if>
+    </select>
+    <select id="findAll" resultType="com.student.bean.Clazz">
+        select * from clazz
+    </select>
+    <insert id="addClazz" parameterType="com.student.bean.Clazz">
+        insert into clazz(id,gradeId,name,remark) values(null,#{gradeId},#{name},#{remark})
+    </insert>
+    <update id="updateClazz" parameterType="com.student.bean.Clazz">
+        update clazz set gradeId = #{gradeId},name = #{name},remark = #{remark} where id = #{id}
+    </update>
+    <delete id="deleteClazz" parameterType="java.lang.String">
+        delete from clazz where id in(${value})
+    </delete>
+</mapper>

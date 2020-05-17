@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student.dao.StudentMapper" >
+    <!--int addStudent(Student student);
+    public  int updateStudent(Student student);
+    public int deleteStudent(String ids);
+    public List<Student> getStudentList(Map<String, Object> map);
+    public int getCount(Map<String, Object> map);
+    public List<Student> findAll();
+    public Student findByUsername(String username);
+    -->
+    <select id="findByUsername" parameterType="java.lang.String" resultType="com.student.bean.Student">
+        select * from student where username = #{username}
+    </select>
+    <select id="getStudentList" parameterType="java.util.Map" resultType="com.student.bean.Student">
+        select * from student where 1=1
+        <if test="username !=null">
+           and username like #{username}
+        </if>
+        <if test="clazzId !=null">
+            and clazzId = #{clazzId}
+        </if>
+        limit #{offset},#{pageSize}
+    </select>
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from student where 1=1
+        <if test="username !=null">
+           and username like #{username}
+        </if>
+        <if test="clazzId !=null">
+           and clazzId = #{clazzId}
+        </if>
+    </select>
+    <select id="findAll" resultType="com.student.bean.Student">
+        select * from student
+    </select>
+    <insert id="addStudent" parameterType="com.student.bean.Student">
+        insert into student(id,clazzId,sn,username,password,sex,photo,remark) values(null,#{clazzId},#{sn},#{username},#{password},#{sex},#{photo},#{remark})
+    </insert>
+    <update id="updateStudent" parameterType="com.student.bean.Clazz">
+        update student set clazzId = #{clazzId},username = #{username},password = #{password},sex = #{sex}, photo = #{photo},remark = #{remark} where id = #{id}
+    </update>
+    <delete id="deleteStudent" parameterType="java.lang.String">
+        delete from student where id in(${value})
+    </delete>
+</mapper>
